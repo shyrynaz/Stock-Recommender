@@ -5,6 +5,6 @@ import companyReducers from "./companyReducers";
 
 export default combineReducers({
   auth: authReducers,
-  error: errorReducers,
+  errors: errorReducers,
   company: companyReducers
 });

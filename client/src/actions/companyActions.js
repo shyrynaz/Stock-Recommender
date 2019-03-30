@@ -10,7 +10,7 @@ import {
 //getting a list of all companies
 export const getCompanies = () => dispatch => {
   axios
-    .get("api/companies/companies")
+    .get("api/companies/companyNames")
     .then(res =>
       dispatch({
         type: GET_COMPANIES,
@@ -27,18 +27,17 @@ export const getCompanies = () => dispatch => {
 
 //adding a company to be tracked
 export const addCompany = companyData => dispatch => {
-  const companies = companyData.companies;
   axios
-    .post("api/companies/companies/add", companyData)
+    .post("api/companies/add", companyData)
     .then(res =>
       dispatch({
         type: ADD_COMPANY,
         payload: res.data
       })
     )
-    .then(data =>
+    /*.then(data =>
       companies ? dispatch(getStocks(companies.concat(data.payload))) : null
-    )
+    )*/
     .catch(err => console.log(err));
 };
 
@@ -64,9 +63,9 @@ export const deleteCompany = companyData => dispatch => {
 };
 
 // get the stocks data of the added companies;
-export const getStocks = companyData => dispatch => {
+export const getStocks = () => dispatch => {
   axios
-    .get("api/companies/stocks", companyData)
+    .get("api/companies/stockData")
     .then(res =>
       dispatch({
         type: GET_STOCKS,

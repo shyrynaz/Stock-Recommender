@@ -1,62 +1,52 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../actions/authActions";
-import AddCompany from "./company/addCompany";
+import { Row, Col, Card, Statistic, Icon } from "antd";
+import "antd/dist/antd.css";
+//import { getStocks } from "../../actions/companyActions";
+import { getCompanies } from "../../actions/companyActions";
 
 class Dashboard extends Component {
-  onLogoutClick = e => {
-    e.preventDefault();
-    this.props.logoutUser();
-  };
+  componentWillMount() {
+    this.props.dispatch(getCompanies());
+  }
   render() {
-    const { user } = this.props.auth;
+    const data = this.props.stockData;
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col s12 left-align">
-            <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                Welcome please add a company you wish to track
-              </p>
-            </h4>
-          </div>
-          <div className="col s12">
-            <AddCompany />
-          </div>
-        </div>
-        <div>
-          <div className="col s10 offset-s10">
-            <button
-              style={{
-                width: "150px",
-                borderRadius: "15px",
-                letterSpacing: "0.5px",
-                marginTop: "1rem"
-              }}
-              onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
+      <div className="App">
+        <Row gutter={16}>
+          {data.map((company, index) => {
+            return (
+              <div>
+                <Col span={6} key={index}>
+                  <Card title={company.Name}>
+                    <Statistic
+                      title="high"
+                      value={company.LastSale}
+                      precision={2}
+                      valueStyle={{ color: "#3f8600" }}
+                      prefix={<Icon type="arrow-up" />}
+                      suffix="%"
+                    />
+
+                    <Statistic
+                      title="low"
+                      value={company.LastSale}
+                      precision={2}
+                      valueStyle={{ color: "#cf1322" }}
+                      prefix={<Icon type="arrow-down" />}
+                      suffix="%"
+                    />
+                  </Card>
+                </Col>
+              </div>
+            );
+          })}
+        </Row>
       </div>
     );
   }
 }
-
-Dashboard.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
-  auth: state.auth
+  stockData: state.company.companies
 });
-
-export default connect(
-  mapStateToProps,
-  { logoutUser }
-)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);
