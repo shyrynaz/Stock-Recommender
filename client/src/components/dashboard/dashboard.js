@@ -2,40 +2,47 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Card, Statistic, Icon } from "antd";
 import "antd/dist/antd.css";
-//import { getStocks } from "../../actions/companyActions";
-import { getCompanies } from "../../actions/companyActions";
+import { getStocks } from "../../actions/companyActions";
+
+const gridStyle = {
+  width: "50%",
+  textAlign: "center"
+};
 
 class Dashboard extends Component {
-  componentWillMount() {
-    this.props.dispatch(getCompanies());
+  componentDidMount() {
+    this.props.dispatch(getStocks());
   }
   render() {
     const data = this.props.stockData;
     return (
-      <div className="App">
+      <div>
         <Row gutter={16}>
           {data.map((company, index) => {
             return (
-              <div>
-                <Col span={6} key={index}>
-                  <Card title={company.Name}>
-                    <Statistic
-                      title="high"
-                      value={company.LastSale}
-                      precision={2}
-                      valueStyle={{ color: "#3f8600" }}
-                      prefix={<Icon type="arrow-up" />}
-                      suffix="%"
-                    />
-
-                    <Statistic
-                      title="low"
-                      value={company.LastSale}
-                      precision={2}
-                      valueStyle={{ color: "#cf1322" }}
-                      prefix={<Icon type="arrow-down" />}
-                      suffix="%"
-                    />
+              <div key={index}>
+                <Col span={8}>
+                  <Card
+                    style={{ marginBottom: 10 }}
+                    title={company.companyName}
+                    extra={company.changePercent + "%"}
+                  >
+                    <Card.Grid style={gridStyle}>
+                      <Statistic
+                        title="high"
+                        value={company.high}
+                        valueStyle={{ color: "#3f8600" }}
+                        prefix={<Icon type="arrow-up" />}
+                      />
+                    </Card.Grid>
+                    <Card.Grid style={gridStyle}>
+                      <Statistic
+                        title="low"
+                        value={company.low}
+                        valueStyle={{ color: "#cf1322" }}
+                        prefix={<Icon type="arrow-down" />}
+                      />
+                    </Card.Grid>
                   </Card>
                 </Col>
               </div>
@@ -47,6 +54,7 @@ class Dashboard extends Component {
   }
 }
 const mapStateToProps = state => ({
-  stockData: state.company.companies
+  stockData: state.company.stocks
 });
+
 export default connect(mapStateToProps)(Dashboard);

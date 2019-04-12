@@ -1,11 +1,6 @@
 import axios from "axios";
 
-import {
-  ADD_COMPANY,
-  DELETE_COMPANY,
-  GET_COMPANIES,
-  GET_STOCKS
-} from "./types";
+import { GET_COMPANIES, GET_STOCKS, GET_COMPANYINFO } from "./types";
 
 //getting a list of all companies
 export const getCompanies = () => dispatch => {
@@ -25,41 +20,23 @@ export const getCompanies = () => dispatch => {
     );
 };
 
-//adding a company to be tracked
-export const addCompany = companyData => dispatch => {
+//getting company info
+export const getCompanyInfo = companyData => dispatch => {
+  console.log(companyData);
   axios
-    .post("api/companies/add", companyData)
+    .post("api/companies/companyInfo", companyData)
     .then(res =>
       dispatch({
-        type: ADD_COMPANY,
+        type: GET_COMPANYINFO,
         payload: res.data
       })
     )
-    /*.then(data =>
-      companies ? dispatch(getStocks(companies.concat(data.payload))) : null
-    )*/
-    .catch(err => console.log(err));
-};
-
-//deleting a company from a list of tracked companies
-export const deleteCompany = companyData => dispatch => {
-  if (window.confirm("Do yo want to remove this company?")) {
-    const name = companyData.companyName;
-
-    const newCompanies = companyData.companies.filter(
-      company => company.name !== name
+    .catch(err =>
+      dispatch({
+        type: GET_COMPANYINFO,
+        payload: null
+      })
     );
-    axios
-      .delete("/api/companies/companies/delete")
-      .then(res =>
-        dispatch({
-          type: DELETE_COMPANY,
-          payload: name
-        })
-      )
-      .then(newCompanies ? dispatch(getStocks(newCompanies)) : null)
-      .catch(err => console.log(err));
-  }
 };
 
 // get the stocks data of the added companies;

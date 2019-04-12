@@ -12,7 +12,7 @@ import Dashboard from "./components/dashboard/dashboard";
 import Technology from "./components/dashboard/technology";
 import Finance from "./components/dashboard/finance";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 class Main extends Component {
   state = {
@@ -21,9 +21,6 @@ class Main extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
-  };
-  onCollapse = collapsed => {
-    this.setState({ collapsed });
   };
   toggle = () => {
     this.setState({
@@ -59,14 +56,10 @@ class Main extends Component {
     }
     return (
       <Router>
-        <Layout style={{ minHeight: "100vh" }}>
-          <Sider
-            collapsible
-            collapsed={this.state.collapsed}
-            onCollapse={this.onCollapse}
-          >
+        <Layout>
+          <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
             <div className="logo" />
-            <Menu theme="dark" mode="inline">
+            <Menu theme="dark" mode="vertical-left" defaultSelectedKeys={["1"]}>
               <Menu.Item key="1">
                 <Icon type="home" />
                 <span>Dashboard</span>
@@ -100,7 +93,7 @@ class Main extends Component {
             </Menu>
           </Sider>
           <Layout>
-            <Header>
+            <Header style={{ background: "#fff", padding: 0 }}>
               <Icon
                 className="trigger"
                 type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
@@ -126,7 +119,6 @@ class Main extends Component {
                 <PrivateRoute path="/finance" component={Finance} />
               </Switch>
             </Content>
-            <Footer style={{ textAlign: "center" }}>Shiri Inc</Footer>
           </Layout>
         </Layout>
       </Router>

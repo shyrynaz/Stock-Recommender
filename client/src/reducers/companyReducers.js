@@ -1,13 +1,9 @@
-import {
-  ADD_COMPANY,
-  DELETE_COMPANY,
-  GET_COMPANIES,
-  GET_STOCKS
-} from "../actions/types";
+import { GET_COMPANIES, GET_STOCKS, GET_COMPANYINFO } from "../actions/types";
 
 const initialState = {
   companies: [],
-  stocks: []
+  stocks: [],
+  companyInfo: []
 };
 
 export default function(state = initialState, action) {
@@ -17,17 +13,10 @@ export default function(state = initialState, action) {
         ...state,
         companies: action.payload
       };
-    case ADD_COMPANY:
+    case GET_COMPANYINFO:
       return {
         ...state,
-        companies: [action.payload, ...state.companies]
-      };
-    case DELETE_COMPANY:
-      return {
-        ...state,
-        companies: state.companies.filter(
-          company => company.name !== action.payload
-        )
+        companyInfo: action.payload
       };
     case GET_STOCKS:
       return {
