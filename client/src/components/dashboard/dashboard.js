@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card, Statistic, Icon } from "antd";
+import { Card, Statistic, Icon } from "antd";
 import "antd/dist/antd.css";
 import { getStocks } from "../../actions/companyActions";
 
 const gridStyle = {
   width: "50%",
-  textAlign: "center"
+  textAlign: "center",
+  padding: 1
 };
 
 class Dashboard extends Component {
@@ -17,38 +18,36 @@ class Dashboard extends Component {
     const data = this.props.stockData;
     return (
       <div>
-        <Row gutter={16}>
+        <div className="wrapper">
           {data.map((company, index) => {
             return (
               <div key={index}>
-                <Col span={8}>
-                  <Card
-                    style={{ marginBottom: 10 }}
-                    title={company.companyName}
-                    extra={company.changePercent + "%"}
-                  >
-                    <Card.Grid style={gridStyle}>
-                      <Statistic
-                        title="high"
-                        value={company.high}
-                        valueStyle={{ color: "#3f8600" }}
-                        prefix={<Icon type="arrow-up" />}
-                      />
-                    </Card.Grid>
-                    <Card.Grid style={gridStyle}>
-                      <Statistic
-                        title="low"
-                        value={company.low}
-                        valueStyle={{ color: "#cf1322" }}
-                        prefix={<Icon type="arrow-down" />}
-                      />
-                    </Card.Grid>
-                  </Card>
-                </Col>
+                <Card
+                  style={{ marginBottom: 10 }}
+                  title={company.companyName}
+                  extra={company.changePercent + "%"}
+                >
+                  <Card.Grid style={gridStyle}>
+                    <Statistic
+                      title="high"
+                      value={company.high}
+                      valueStyle={{ color: "#3f8600" }}
+                      prefix={<Icon type="arrow-up" />}
+                    />
+                  </Card.Grid>
+                  <Card.Grid style={gridStyle}>
+                    <Statistic
+                      title="low"
+                      value={company.low}
+                      valueStyle={{ color: "#cf1322" }}
+                      prefix={<Icon type="arrow-down" />}
+                    />
+                  </Card.Grid>
+                </Card>
               </div>
             );
           })}
-        </Row>
+        </div>
       </div>
     );
   }

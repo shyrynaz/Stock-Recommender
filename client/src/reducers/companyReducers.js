@@ -1,9 +1,17 @@
-import { GET_COMPANIES, GET_STOCKS, GET_COMPANYINFO } from "../actions/types";
+import {
+  GET_COMPANIES,
+  GET_STOCKS,
+  GET_COMPANYINFO,
+  GET_CHARTDATA,
+  GET_SENTIMENT
+} from "../actions/types";
 
 const initialState = {
   companies: [],
   stocks: [],
-  companyInfo: []
+  companyInfo: [],
+  chartData: [],
+  sentimentData: []
 };
 
 export default function(state = initialState, action) {
@@ -23,6 +31,17 @@ export default function(state = initialState, action) {
         ...state,
         stocks: action.payload
       };
+    case GET_CHARTDATA:
+      return {
+        ...state,
+        chartData: action.payload
+      };
+    case GET_SENTIMENT:
+      return {
+        ...state,
+        sentimentData: action.payload
+      };
+
     default:
       return state;
   }

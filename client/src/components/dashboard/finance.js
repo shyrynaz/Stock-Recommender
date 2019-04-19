@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // import PropTypes from "prop-types";
-import { Select, List, Avatar, Button } from "antd";
+import { Select, List, Avatar, Button, Row, Col } from "antd";
 import "antd/dist/antd.css";
-import { getCompanies, getCompanyInfo } from "../../actions/companyActions";
+import {
+  getCompanies,
+  getCompanyInfo,
+  getChartData
+} from "../../actions/companyActions";
+import ChartDisplay from "../layouts/chart";
 
-// const { Meta } = Card;
 class Finance extends Component {
   constructor() {
     super();
@@ -24,37 +28,11 @@ class Finance extends Component {
     const companyData = { symbol: this.state.symbol };
     // console.log(companyData);
     this.props.dispatch(getCompanyInfo(companyData));
+    this.props.dispatch(getChartData(companyData));
   };
+
   render() {
-    // console.log(this.state.selectedCompany);
     const companyNames = this.props.selectOptions;
-    const newsArticles = this.props.companyInfo;
-    // console.log(newsArticles);
-    const newsData = newsArticles.map(company =>
-      company.map(item => {
-        const data = item;
-        console.log(data);
-        return (
-          <div className="card text-white bg-primary mb-3">
-            <List
-              itemLayout="horizontal"
-              dataSource={data}
-              renderItem={value => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                    }
-                    title={<a href="https://ant.design">{value.headline}</a>}
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                  />
-                </List.Item>
-              )}
-            />
-          </div>
-        );
-      })
-    );
     return (
       <div>
         <Select
@@ -82,21 +60,59 @@ class Finance extends Component {
         >
           GetInfo
         </Button>
-        <div>{newsData}</div>
+        <Row>
+          <Col span={12}>{this.renderNewsArticles()}</Col>
+          <Col span={12}>{this.renderChart()}</Col>
+        </Row>
       </div>
     );
   }
-  // renderNewsArticles() {
-
-  //   // console.log(newsData);
-  //   return (
-
-  //   );
-  // }
+  renderNewsArticles() {
+    const newsArticles = this.props.companyInfo;
+    return (
+      <List
+        itemLayout="horizontal"
+        dataSource={newsArticles}
+        renderItem={item => (
+          <List.Item extra={<img width={272} alt="logo" src={item.image} />}>
+            <List.Item.Meta
+              title={
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  {item.headline}
+                </a>
+              }
+              description={
+                <span>
+                  <p>
+                    <b>Source: </b>
+                    {item.source}
+                  </p>
+                  <p>
+                    <b>Date: </b>
+                    {item.datetime}
+                  </p>
+                </span>
+              }
+            />
+            {item.summary}
+          </List.Item>
+        )}
+      />
+    );
+  }
+  renderChart() {
+    const chartData = this.props.chartData;
+    if (!chartData.length) {
+      return <div>no Data to display</div>;
+    } else {
+      return <ChartDisplay chartData={chartData} />;
+    }
+  }
 }
 const mapStateToProps = state => ({
   selectOptions: state.company.companies,
-  companyInfo: state.company.companyInfo
+  companyInfo: state.company.companyInfo,
+  chartData: state.company.chartData
 });
 
 export default connect(mapStateToProps)(Finance);

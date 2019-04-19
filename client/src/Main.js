@@ -34,8 +34,8 @@ class Main extends Component {
     if (auth.isAuthenticated === true) {
       userAuth = (
         <Button
-          className="button1"
           style={{ margin: 10 }}
+          className="button1"
           type="primary"
           onClick={this.onLogoutClick}
         >
@@ -57,7 +57,16 @@ class Main extends Component {
     return (
       <Router>
         <Layout>
-          <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+          <Sider
+            trigger={null}
+            collapsible
+            collapsed={this.state.collapsed}
+            style={{
+              height: "100vh",
+              position: "fixed",
+              left: 0
+            }}
+          >
             <div className="logo" />
             <Menu theme="dark" mode="vertical-left" defaultSelectedKeys={["1"]}>
               <Menu.Item key="1">
@@ -92,8 +101,16 @@ class Main extends Component {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Layout>
-            <Header style={{ background: "#fff", padding: 0 }}>
+          <Layout style={{ marginLeft: 200 }}>
+            <Header
+              style={{
+                background: "#fff",
+                padding: 0,
+                position: "fixed",
+                zIndex: 1,
+                width: "85%"
+              }}
+            >
               <Icon
                 className="trigger"
                 type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
@@ -105,10 +122,9 @@ class Main extends Component {
             </Header>
             <Content
               style={{
-                margin: "24px 16px",
-                padding: 24,
-                background: "#fff",
-                minHeight: 280
+                margin: "24px 16px 0px",
+                paddingTop: 45,
+                overflow: "initial"
               }}
             >
               <Switch>
