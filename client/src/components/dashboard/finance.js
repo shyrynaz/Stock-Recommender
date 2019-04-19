@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import PropTypes from "prop-types";
-import { Select, List, Avatar, Button, Row, Col } from "antd";
-import "antd/dist/antd.css";
+import PropTypes from "prop-types";
+import { Select, Button, List, Card, Statistic } from "antd";
 import {
   getCompanies,
+  getChartData,
   getCompanyInfo,
-  getChartData
+  getSentimentData
 } from "../../actions/companyActions";
 import ChartDisplay from "../layouts/chart";
 
@@ -29,8 +29,8 @@ class Finance extends Component {
     // console.log(companyData);
     this.props.dispatch(getCompanyInfo(companyData));
     this.props.dispatch(getChartData(companyData));
+    this.props.dispatch(getSentimentData(companyData));
   };
-
   render() {
     const companyNames = this.props.selectOptions;
     return (
@@ -60,10 +60,11 @@ class Finance extends Component {
         >
           GetInfo
         </Button>
-        <Row>
-          <Col span={12}>{this.renderNewsArticles()}</Col>
-          <Col span={12}>{this.renderChart()}</Col>
-        </Row>
+        <div>
+          <div>{this.renderSentiment()}</div>
+          <div>{this.renderChart()}</div>
+        </div>
+        <div>{this.renderNewsArticles()}</div>
       </div>
     );
   }
@@ -71,30 +72,21 @@ class Finance extends Component {
     const newsArticles = this.props.companyInfo;
     return (
       <List
-        itemLayout="horizontal"
+        header={<h5>News Articles</h5>}
+        grid={{ gutter: 18, column: 3 }}
         dataSource={newsArticles}
         renderItem={item => (
-          <List.Item extra={<img width={272} alt="logo" src={item.image} />}>
-            <List.Item.Meta
-              title={
+          <List.Item>
+            <Card
+              title={item.headline}
+              extra={
                 <a href={item.url} target="_blank" rel="noopener noreferrer">
-                  {item.headline}
+                  More
                 </a>
               }
-              description={
-                <span>
-                  <p>
-                    <b>Source: </b>
-                    {item.source}
-                  </p>
-                  <p>
-                    <b>Date: </b>
-                    {item.datetime}
-                  </p>
-                </span>
-              }
-            />
-            {item.summary}
+            >
+              {item.summary}
+            </Card>
           </List.Item>
         )}
       />
@@ -108,11 +100,53 @@ class Finance extends Component {
       return <ChartDisplay chartData={chartData} />;
     }
   }
+  renderSentiment() {
+    const gridStyle = {
+      width: "50%",
+      textAlign: "center"
+    };
+
+    const sentimentData = Object.values(this.props.sentimentData);
+    // console.log(sentimentData);
+    return (
+      <Card style={{ marginBottom: 10 }} title={sentimentData[1]}>
+        <Card.Grid style={gridStyle}>
+          <Statistic
+            title="Strength"
+            value={sentimentData[7]}
+            valueStyle={{ color: "#3f8600" }}
+          />
+        </Card.Grid>
+        <Card.Grid style={gridStyle}>
+          <Statistic
+            title="Sentiment"
+            value={sentimentData[6]}
+            valueStyle={{ color: "#cf1322" }}
+          />
+        </Card.Grid>
+        <Card.Grid style={gridStyle}>
+          <Statistic
+            title="Reach"
+            value={sentimentData[9]}
+            valueStyle={{ color: "#cf1322" }}
+          />
+        </Card.Grid>
+        <Card.Grid style={gridStyle}>
+          <Statistic
+            title="Passion"
+            value={sentimentData[8]}
+            valueStyle={{ color: "#cf1322" }}
+          />
+        </Card.Grid>
+      </Card>
+    );
+  }
 }
 const mapStateToProps = state => ({
   selectOptions: state.company.companies,
+  chartData: state.company.chartData,
   companyInfo: state.company.companyInfo,
-  chartData: state.company.chartData
+  sentimentData: state.company.sentimentData
 });
 
 export default connect(mapStateToProps)(Finance);

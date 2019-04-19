@@ -11,6 +11,9 @@ import PrivateRoute from "./components/private-routes/privateRoute";
 import Dashboard from "./components/dashboard/dashboard";
 import Technology from "./components/dashboard/technology";
 import Finance from "./components/dashboard/finance";
+import HealthCare from "./components/dashboard/health";
+import Energy from "./components/dashboard/energy";
+import ConsumerServices from "./components/dashboard/consumer";
 
 const { Header, Content, Sider } = Layout;
 
@@ -97,7 +100,7 @@ class Main extends Component {
               <Menu.Item key="6">
                 <Icon type="customer-service" />
                 <span>Consumer Services</span>
-                <Link to="/ConsumerServices" />
+                <Link to="/consumerServices" />
               </Menu.Item>
             </Menu>
           </Sider>
@@ -133,6 +136,9 @@ class Main extends Component {
                 <Route path="/login" component={Login} />
                 <PrivateRoute path="/technology" component={Technology} />
                 <PrivateRoute path="/finance" component={Finance} />
+                <PrivateRoute path="/energy" component={Energy} />
+                <PrivateRoute path="/healthCare" component={HealthCare} />
+                <PrivateRoute path="/consumerServices" component={ConsumerServices} />
               </Switch>
             </Content>
           </Layout>
