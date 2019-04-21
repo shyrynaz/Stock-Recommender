@@ -42,7 +42,7 @@ class ConsumerServices extends Component {
           style={{ width: "25%" }}
           onChange={this.handleChange}
         >
-          {companyNames.map((company, index) => {
+          {companyNames && companyNames.map((company, index) => {
             if (company.Sector === "Consumer Services") {
               return (
                 <Select.Option key={index} value={company.Symbol}>

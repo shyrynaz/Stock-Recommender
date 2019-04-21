@@ -18,6 +18,8 @@ class Finance extends Component {
     };
   }
   componentWillMount() {
+    console.log(">>>>>>>>>");
+    
     this.props.dispatch(getCompanies());
   }
   handleChange = e => {
@@ -42,7 +44,7 @@ class Finance extends Component {
           style={{ width: "25%" }}
           onChange={this.handleChange}
         >
-          {companyNames.map((company, index) => {
+          {companyNames && companyNames.map((company, index) => {
             if (company.Sector === "Finance") {
               return (
                 <Select.Option key={index} value={company.Symbol}>

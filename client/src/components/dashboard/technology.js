@@ -17,8 +17,10 @@ class Technology extends Component {
       symbol: ""
     };
   }
-  componentWillMount() {
-    this.props.dispatch(getCompanies());
+  componentDidMount() {
+    
+    this.props.getCompanies()
+    
   }
   handleChange = e => {
     this.setState({ symbol: e });
@@ -27,12 +29,15 @@ class Technology extends Component {
     e.preventDefault();
     const companyData = { symbol: this.state.symbol };
     // console.log(companyData);
-    this.props.dispatch(getCompanyInfo(companyData));
-    this.props.dispatch(getChartData(companyData));
-    this.props.dispatch(getSentimentData(companyData));
+    this.props.getCompanyInfo(companyData);
+    this.props.getChartData(companyData);
+    this.props.getSentimentData(companyData);
   };
   render() {
     const companyNames = this.props.selectOptions;
+
+    console.log({companyNames});
+    
     return (
       <div>
         <Select
@@ -42,7 +47,7 @@ class Technology extends Component {
           style={{ width: "25%" }}
           onChange={this.handleChange}
         >
-          {companyNames.map((company, index) => {
+          {companyNames && companyNames.map((company, index) => {
             if (company.Sector === "Technology") {
               return (
                 <Select.Option key={index} value={company.Symbol}>
@@ -142,6 +147,7 @@ class Technology extends Component {
     );
   }
 }
+
 const mapStateToProps = state => ({
   selectOptions: state.company.companies,
   chartData: state.company.chartData,
@@ -149,4 +155,8 @@ const mapStateToProps = state => ({
   sentimentData: state.company.sentimentData
 });
 
-export default connect(mapStateToProps)(Technology);
+export default connect(mapStateToProps, { getCompanies,
+  getChartData,
+  getCompanyInfo,
+  getSentimentData
+})(Technology);

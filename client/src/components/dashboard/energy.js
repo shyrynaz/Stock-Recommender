@@ -42,16 +42,17 @@ class Energy extends Component {
           style={{ width: "25%" }}
           onChange={this.handleChange}
         >
-          {companyNames.map((company, index) => {
-            if (company.Sector === "Energy") {
-              return (
-                <Select.Option key={index} value={company.Symbol}>
-                  {company.Name} {company.Symbol}
-                </Select.Option>
-              );
-            }
-            return null;
-          })}
+          {companyNames &&
+            companyNames.map((company, index) => {
+              if (company.Sector === "Energy") {
+                return (
+                  <Select.Option key={index} value={company.Symbol}>
+                    {company.Name} {company.Symbol}
+                  </Select.Option>
+                );
+              }
+              return null;
+            })}
         </Select>
         <Button
           style={{ marginLeft: 10 }}

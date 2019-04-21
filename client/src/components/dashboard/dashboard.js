@@ -19,7 +19,7 @@ class Dashboard extends Component {
     return (
       <div>
         <div className="wrapper">
-          {data.map((company, index) => {
+          {data && data.map((company, index) => {
             return (
               <div key={index}>
                 <Card

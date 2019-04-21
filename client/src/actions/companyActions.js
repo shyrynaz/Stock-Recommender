@@ -10,15 +10,22 @@ import {
 
 //getting a list of all companies
 export const getCompanies = () => dispatch => {
+  console.log(" fer >>>>>>>");
+  
   axios
     .get("api/companies/companyNames")
     .then(res =>
+
+      // console.log( "res", {res}),
+      
       dispatch({
         type: GET_COMPANIES,
         payload: res.data
       })
     )
     .catch(err =>
+      console.log(">>>>>>>>>>>err", {err}),
+      
       dispatch({
         type: GET_COMPANIES,
         payload: null
