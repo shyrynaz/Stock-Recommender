@@ -32,6 +32,11 @@ code {
   text-align: center;
   text-decoration-color: blue;
 }
+.section-devider {
+  height: 32px;
+  background: rgba(161, 157, 157, 0.13);
+  margin-top: 10px;
+}
 
 .button1 {
   position: absolute;
@@ -46,8 +51,7 @@ code {
 
 .wrapper1 {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: minmax(auto);
+  grid-template-columns: repeat(3, 2fr);
 }
 
 .wrapper > div {

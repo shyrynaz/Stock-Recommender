@@ -5,27 +5,26 @@ import {
   GET_STOCKS,
   GET_COMPANYINFO,
   GET_CHARTDATA,
-  GET_SENTIMENT
+  GET_SENTIMENT,
+  GET_SECTOR_PERFORMANCE,
+  GET_GAINERS,
+  GET_LOSERS,
+  GET_COMPANY_PROFILE
 } from "./types";
 
 //getting a list of all companies
 export const getCompanies = () => dispatch => {
-  console.log(" fer >>>>>>>");
-  
   axios
     .get("api/companies/companyNames")
     .then(res =>
-
       // console.log( "res", {res}),
-      
+
       dispatch({
         type: GET_COMPANIES,
         payload: res.data
       })
     )
     .catch(err =>
-      console.log(">>>>>>>>>>>err", {err}),
-      
       dispatch({
         type: GET_COMPANIES,
         payload: null
@@ -37,7 +36,7 @@ export const getCompanies = () => dispatch => {
  * gets a companies news articles
  */
 export const getCompanyInfo = companyData => dispatch => {
-  console.log(companyData);
+  // console.log(companyData);
   axios
     .post("api/companies/companyInfo", companyData)
     .then(res =>
@@ -72,6 +71,57 @@ export const getStocks = () => dispatch => {
     );
 };
 
+export const getSectorPerformance = () => dispatch => {
+  axios
+    .get("api/companies/sectorPerformance")
+    .then(res =>
+      dispatch({
+        type: GET_SECTOR_PERFORMANCE,
+        payload: res.data
+      })
+    )
+    .catch(res =>
+      dispatch({
+        type: GET_SECTOR_PERFORMANCE,
+        payload: null
+      })
+    );
+};
+
+export const getGainers = () => dispatch => {
+  axios
+    .get("api/companies/gainers")
+    .then(res =>
+      dispatch({
+        type: GET_GAINERS,
+        payload: res.data
+      })
+    )
+    .catch(res =>
+      dispatch({
+        type: GET_GAINERS,
+        payload: null
+      })
+    );
+};
+
+export const getLosers = () => dispatch => {
+  axios
+    .get("api/companies/losers")
+    .then(res =>
+      dispatch({
+        type: GET_LOSERS,
+        payload: res.data
+      })
+    )
+    .catch(res =>
+      dispatch({
+        type: GET_LOSERS,
+        payload: null
+      })
+    );
+};
+
 export const getChartData = companyData => dispatch => {
   axios
     .post("api/companies/chartData", companyData)
@@ -101,6 +151,23 @@ export const getSentimentData = companyData => dispatch => {
     .catch(res =>
       dispatch({
         type: GET_SENTIMENT,
+        payload: null
+      })
+    );
+};
+
+export const getCompanyProfile = companyData => dispatch => {
+  axios
+    .post("api/companies/companyProfile", companyData)
+    .then(res =>
+      dispatch({
+        type: GET_COMPANY_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(res =>
+      dispatch({
+        type: GET_COMPANY_PROFILE,
         payload: null
       })
     );

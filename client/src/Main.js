@@ -67,7 +67,7 @@ class Main extends Component {
             style={{
               height: "100vh",
               position: "fixed",
-              left: 0
+              overflow: "auto"
             }}
           >
             <div className="logo" />
@@ -125,8 +125,8 @@ class Main extends Component {
             </Header>
             <Content
               style={{
-                margin: "24px 16px 0px",
-                paddingTop: 45,
+                margin: "24px 16px 10px",
+                paddingTop: 55,
                 overflow: "initial"
               }}
             >
@@ -138,7 +138,10 @@ class Main extends Component {
                 <PrivateRoute path="/finance" component={Finance} />
                 <PrivateRoute path="/energy" component={Energy} />
                 <PrivateRoute path="/healthCare" component={HealthCare} />
-                <PrivateRoute path="/consumerServices" component={ConsumerServices} />
+                <PrivateRoute
+                  path="/consumerServices"
+                  component={ConsumerServices}
+                />
               </Switch>
             </Content>
           </Layout>

@@ -15,7 +15,6 @@ class StockService {
       "ADBE"
     ];
     const url = `https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote`;
-    //const url = `https://www.worldtradingdata.com/api/v1/stock?symbol=${symbols}&api_token=mp0nGXOt7F5YXy3VxtjQ45xZZ0A4LMUFWSVyVjQ39bcwOzJOd800kwkQIhi5`;
     let response = await axios.get(url);
 
     let stockData = response.data;
@@ -25,6 +24,34 @@ class StockService {
     });
 
     return stocks;
+  }
+
+  async getSectorPerformance() {
+    const url = `https://cloud.iexapis.com/stable/stock/market/sector-performance?token=pk_fe293720f28843b19c198db63a5776b7`;
+
+    let response = await axios.get(url);
+    const sectorPerformance = response.data;
+
+    // console.log(sectorPerformance)
+    return sectorPerformance;
+  }
+
+  async getGainersList() {
+    const url = `https://cloud.iexapis.com/stable/stock/market/list/gainers?token=pk_fe293720f28843b19c198db63a5776b7`;
+    let response = await axios.get(url);
+
+    const gainersList = response.data;
+
+    return gainersList;
+  }
+
+  async getLosersList() {
+    const url = `https://cloud.iexapis.com/stable/stock/market/list/losers?token=pk_fe293720f28843b19c198db63a5776b7`;
+    let response = await axios.get(url);
+
+    const losersList = response.data;
+
+    return losersList;
   }
 }
 module.exports = new StockService();

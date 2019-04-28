@@ -1,12 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Select, Button, List, Row, Col, Card, Statistic } from "antd";
+import {
+  Select,
+  Button,
+  List,
+  Tooltip,
+  Card,
+  Statistic,
+  Empty,
+  Row,
+  Col
+} from "antd";
 import {
   getCompanies,
   getChartData,
   getCompanyInfo,
-  getSentimentData
+  getSentimentData,
+  getCompanyProfile
 } from "../../actions/companyActions";
 import ChartDisplay from "../layouts/chart";
 
@@ -18,9 +29,7 @@ class Technology extends Component {
     };
   }
   componentDidMount() {
-    
-    this.props.getCompanies()
-    
+    this.props.getCompanies();
   }
   handleChange = e => {
     this.setState({ symbol: e });
@@ -32,43 +41,51 @@ class Technology extends Component {
     this.props.getCompanyInfo(companyData);
     this.props.getChartData(companyData);
     this.props.getSentimentData(companyData);
+    this.props.getCompanyProfile(companyData);
   };
   render() {
     const companyNames = this.props.selectOptions;
 
-    console.log({companyNames});
-    
+    console.log({ companyNames });
+
     return (
       <div>
-        <Select
-          showSearch
-          placeholder="Select a Company"
-          optionFilterProp="children"
-          style={{ width: "25%" }}
-          onChange={this.handleChange}
-        >
-          {companyNames && companyNames.map((company, index) => {
-            if (company.Sector === "Technology") {
-              return (
-                <Select.Option key={index} value={company.Symbol}>
-                  {company.Name} {company.Symbol}
-                </Select.Option>
-              );
-            }
-            return null;
-          })}
-        </Select>
-        <Button
-          style={{ marginLeft: 10 }}
-          type="primary"
-          onClick={this.handleSubmit}
-        >
-          GetInfo
-        </Button>
+        Technology Sector
         <div>
-          <div>{this.renderSentiment()}</div>
-          <div>{this.renderChart()}</div>
+          <Select
+            showSearch
+            placeholder="Select a Company"
+            optionFilterProp="children"
+            style={{ width: "25%" }}
+            onChange={this.handleChange}
+          >
+            {companyNames &&
+              companyNames.map((company, index) => {
+                if (company.Sector === "Technology") {
+                  return (
+                    <Select.Option key={index} value={company.Symbol}>
+                      {company.Name} {company.Symbol}
+                    </Select.Option>
+                  );
+                }
+                return null;
+              })}
+          </Select>
+          <Button
+            style={{ marginLeft: 10 }}
+            type="primary"
+            onClick={this.handleSubmit}
+          >
+            GetInfo
+          </Button>
         </div>
+        <div>
+          <Row gutter={24}>
+            <Col span={12}>{this.renderSentiment()}</Col>
+            <Col span={12}>{this.renderCompanyProfile()}</Col>
+          </Row>
+        </div>
+        <div>{this.renderChart()}</div>
         <div>{this.renderNewsArticles()}</div>
       </div>
     );
@@ -100,9 +117,39 @@ class Technology extends Component {
   renderChart() {
     const chartData = this.props.chartData;
     if (!chartData.length) {
-      return <div>no Data to display</div>;
+      return <Empty />;
     } else {
       return <ChartDisplay chartData={chartData} />;
+    }
+  }
+  renderCompanyProfile() {
+    const profileData = Object.entries(this.props.companyProfile).map(
+      ([key, value]) => {
+        return (
+          <div>
+            <b>{key}</b>: {value}
+          </div>
+        );
+      }
+    );
+    // console.log(profileData);
+    if (!profileData.length) {
+      return <Empty />;
+    } else {
+      return (
+        <List
+          size="small"
+          grid={{ gutter: 18, column: 2 }}
+          header={
+            <div>
+              <b>Company Profile</b>
+            </div>
+          }
+          bordered
+          dataSource={profileData}
+          renderItem={item => <List.Item>{item} </List.Item>}
+        />
+      );
     }
   }
   renderSentiment() {
@@ -115,34 +162,42 @@ class Technology extends Component {
     // console.log(sentimentData);
     return (
       <Card style={{ marginBottom: 10 }} title={sentimentData[1]}>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Strength"
-            value={sentimentData[7]}
-            valueStyle={{ color: "#3f8600" }}
-          />
-        </Card.Grid>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Sentiment"
-            value={sentimentData[6]}
-            valueStyle={{ color: "#cf1322" }}
-          />
-        </Card.Grid>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Reach"
-            value={sentimentData[9]}
-            valueStyle={{ color: "#cf1322" }}
-          />
-        </Card.Grid>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Passion"
-            value={sentimentData[8]}
-            valueStyle={{ color: "#cf1322" }}
-          />
-        </Card.Grid>
+        <Tooltip title="Strength is the likelihood that a brand is being discussed in the media">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Strength"
+              value={sentimentData[7]}
+              valueStyle={{ color: "#3f8600" }}
+            />
+          </Card.Grid>
+        </Tooltip>
+        <Tooltip title="Sentiment is the ratio of mentions that are generally positive to those that are generally negative">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Sentiment"
+              value={sentimentData[6]}
+              valueStyle={{ color: "#cf1322" }}
+            />
+          </Card.Grid>
+        </Tooltip>
+        <Tooltip title="Reach is a measure of the range of influence">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Reach"
+              value={sentimentData[9]}
+              valueStyle={{ color: "#cf1322" }}
+            />
+          </Card.Grid>
+        </Tooltip>
+        <Tooltip title="passion is a measure of likelihood that individuals talking about a brand will do so repeatedly">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Passion"
+              value={sentimentData[8]}
+              valueStyle={{ color: "#cf1322" }}
+            />
+          </Card.Grid>
+        </Tooltip>
       </Card>
     );
   }
@@ -152,11 +207,17 @@ const mapStateToProps = state => ({
   selectOptions: state.company.companies,
   chartData: state.company.chartData,
   companyInfo: state.company.companyInfo,
-  sentimentData: state.company.sentimentData
+  sentimentData: state.company.sentimentData,
+  companyProfile: state.company.companyProfile
 });
 
-export default connect(mapStateToProps, { getCompanies,
-  getChartData,
-  getCompanyInfo,
-  getSentimentData
-})(Technology);
+export default connect(
+  mapStateToProps,
+  {
+    getCompanies,
+    getChartData,
+    getCompanyInfo,
+    getSentimentData,
+    getCompanyProfile
+  }
+)(Technology);

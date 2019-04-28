@@ -3,7 +3,11 @@ import {
   GET_STOCKS,
   GET_COMPANYINFO,
   GET_CHARTDATA,
-  GET_SENTIMENT
+  GET_SENTIMENT,
+  GET_SECTOR_PERFORMANCE,
+  GET_GAINERS,
+  GET_LOSERS,
+  GET_COMPANY_PROFILE
 } from "../actions/types";
 
 const initialState = {
@@ -11,7 +15,11 @@ const initialState = {
   stocks: [],
   companyInfo: [],
   chartData: [],
-  sentimentData: []
+  sentimentData: [],
+  sector: [],
+  gainers: [],
+  losers: [],
+  companyProfile: []
 };
 
 export default function(state = initialState, action) {
@@ -31,6 +39,21 @@ export default function(state = initialState, action) {
         ...state,
         stocks: action.payload
       };
+    case GET_SECTOR_PERFORMANCE:
+      return {
+        ...state,
+        sector: action.payload
+      };
+    case GET_GAINERS:
+      return {
+        ...state,
+        gainers: action.payload
+      };
+    case GET_LOSERS:
+      return {
+        ...state,
+        losers: action.payload
+      };
     case GET_CHARTDATA:
       return {
         ...state,
@@ -40,6 +63,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         sentimentData: action.payload
+      };
+    case GET_COMPANY_PROFILE:
+      return {
+        ...state,
+        companyProfile: action.payload
       };
 
     default:

@@ -38,5 +38,14 @@ class CompanyInfoService {
 
     return sentimentData;
   }
+
+  async getCompanyProfile(symbol) {
+    const url = `https://cloud.iexapis.com/stable/stock/${symbol}/company?token=pk_fe293720f28843b19c198db63a5776b7`;
+
+    let response = await axios.get(url);
+    const companyProfile = response.data;
+    console.log(companyProfile);
+    return companyProfile;
+  }
 }
 module.exports = new CompanyInfoService();

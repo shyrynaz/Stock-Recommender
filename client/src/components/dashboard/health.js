@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Select, Button, List, Card, Statistic } from "antd";
+import { Select, Button, List, Card, Statistic, Tooltip, Empty } from "antd";
 import {
   getCompanies,
   getChartData,
@@ -35,31 +35,35 @@ class HealthCare extends Component {
     const companyNames = this.props.selectOptions;
     return (
       <div>
-        <Select
-          showSearch
-          placeholder="Select a Company"
-          optionFilterProp="children"
-          style={{ width: "25%" }}
-          onChange={this.handleChange}
-        >
-          {companyNames && companyNames.map((company, index) => {
-            if (company.Sector === "Health Care") {
-              return (
-                <Select.Option key={index} value={company.Symbol}>
-                  {company.Name} {company.Symbol}
-                </Select.Option>
-              );
-            }
-            return null;
-          })}
-        </Select>
-        <Button
-          style={{ marginLeft: 10 }}
-          type="primary"
-          onClick={this.handleSubmit}
-        >
-          GetInfo
-        </Button>
+        Health Sector
+        <div>
+          <Select
+            showSearch
+            placeholder="Select a Company"
+            optionFilterProp="children"
+            style={{ width: "25%" }}
+            onChange={this.handleChange}
+          >
+            {companyNames &&
+              companyNames.map((company, index) => {
+                if (company.Sector === "Health Care") {
+                  return (
+                    <Select.Option key={index} value={company.Symbol}>
+                      {company.Name} {company.Symbol}
+                    </Select.Option>
+                  );
+                }
+                return null;
+              })}
+          </Select>
+          <Button
+            style={{ marginLeft: 10 }}
+            type="primary"
+            onClick={this.handleSubmit}
+          >
+            GetInfo
+          </Button>
+        </div>
         <div>
           <div>{this.renderSentiment()}</div>
           <div>{this.renderChart()}</div>
@@ -95,7 +99,7 @@ class HealthCare extends Component {
   renderChart() {
     const chartData = this.props.chartData;
     if (!chartData.length) {
-      return <div>no Data to display</div>;
+      return <Empty />;
     } else {
       return <ChartDisplay chartData={chartData} />;
     }
@@ -110,34 +114,42 @@ class HealthCare extends Component {
     // console.log(sentimentData);
     return (
       <Card style={{ marginBottom: 10 }} title={sentimentData[1]}>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Strength"
-            value={sentimentData[7]}
-            valueStyle={{ color: "#3f8600" }}
-          />
-        </Card.Grid>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Sentiment"
-            value={sentimentData[6]}
-            valueStyle={{ color: "#cf1322" }}
-          />
-        </Card.Grid>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Reach"
-            value={sentimentData[9]}
-            valueStyle={{ color: "#cf1322" }}
-          />
-        </Card.Grid>
-        <Card.Grid style={gridStyle}>
-          <Statistic
-            title="Passion"
-            value={sentimentData[8]}
-            valueStyle={{ color: "#cf1322" }}
-          />
-        </Card.Grid>
+        <Tooltip title="Strength is the likelihood that a brand is being discussed in the media">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Strength"
+              value={sentimentData[7]}
+              valueStyle={{ color: "#3f8600" }}
+            />
+          </Card.Grid>
+        </Tooltip>
+        <Tooltip title="Sentiment is the ratio of mentions that are generally positive to those that are generally negative">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Sentiment"
+              value={sentimentData[6]}
+              valueStyle={{ color: "#cf1322" }}
+            />
+          </Card.Grid>
+        </Tooltip>
+        <Tooltip title="Reach is a measure of the range of influence">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Reach"
+              value={sentimentData[9]}
+              valueStyle={{ color: "#cf1322" }}
+            />
+          </Card.Grid>
+        </Tooltip>
+        <Tooltip title="passion is a measure of likelihood that individuals talking about a brand will do so repeatedly">
+          <Card.Grid style={gridStyle}>
+            <Statistic
+              title="Passion"
+              value={sentimentData[8]}
+              valueStyle={{ color: "#cf1322" }}
+            />
+          </Card.Grid>
+        </Tooltip>
       </Card>
     );
   }

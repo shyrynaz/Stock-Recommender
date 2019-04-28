@@ -24,7 +24,7 @@ class ChartDisplay extends Component {
     super();
     this.state = {
       mode: "log",
-      timerange: new TimeRange([1506985288649, 1506985288649])
+      timerange: new TimeRange([1553374800000, 1556053200000])
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -44,14 +44,11 @@ class ChartDisplay extends Component {
   renderDayChart() {
     const chartData = this.props.chartData;
     const scale = chartData.map(item => {
-      return [
-        { dataKey: item.volume, min: 0 },
-        { dataKey: item.label, min: 0 }
-      ];
+      return [{ dataKey: item.vwap, min: 0 }, { dataKey: item.label, min: 0 }];
     });
 
     const data = chartData.map(item => {
-      return { label: item.label, volume: item.volume };
+      return { label: item.label, price: item.vwap };
     });
 
     return (
@@ -59,8 +56,8 @@ class ChartDisplay extends Component {
         <Tooltip />
         <Axis />
         <Legend />
-        <Line position="label*volume" />
-        <Point position="label*volume" shape="circle" />
+        <Line position="label*price" />
+        <Point position="label*price" shape="circle" />
       </Chart>
     );
   }
@@ -116,7 +113,7 @@ class ChartDisplay extends Component {
           <Charts>
             <LineChart
               axis="y"
-              style={{ close: { normal: { stroke: "steelblue" } } }}
+              style={{ close: { normal: { stroke: "blue" } } }}
               columns={["close"]}
               series={croppedSeries}
               interpolation="curveBasis"
@@ -136,7 +133,7 @@ class ChartDisplay extends Component {
           <Charts>
             <BarChart
               axis="y"
-              style={{ volume: { normal: { stroke: "steelblue" } } }}
+              style={{ volume: { normal: { stroke: "blue" } } }}
               columns={["volume"]}
               series={croppedVolumeSeries}
             />
@@ -165,7 +162,48 @@ class ChartDisplay extends Component {
     };
     return (
       <div>
+        <div className="section-devider" style={{ textAlign: "center" }}>
+          <h6>Stock price</h6>
+        </div>
+
         <div>{this.renderDayChart()}</div>
+        {/* <div>
+          <div className="row">
+            <div className="col-md-12">
+              <h6>Stock price</h6>
+            </div>
+          </div>
+
+          <hr />
+
+          <div className="row">
+            <div className="col-md-12" style={{ fontSize: 14, color: "#777" }}>
+              <span
+                style={this.state.mode === "log" ? linkStyleActive : linkStyle}
+                onClick={this.setModeLinear}
+              >
+                Linear
+              </span>
+              <span> | </span>
+              <span
+                style={
+                  this.state.mode === "linear" ? linkStyleActive : linkStyle
+                }
+                onClick={this.setModeLog}
+              >
+                Log
+              </span>
+            </div>
+          </div>
+
+          <hr />
+
+          <div className="row">
+            <div className="col-md-12">
+              <Resizable>{this.renderChart()}</Resizable>
+            </div>
+          </div>
+        </div> */}
       </div>
     );
   }
