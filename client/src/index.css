@@ -26,16 +26,20 @@ code {
 
 .logo {
   height: 32px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(56, 131, 68, 0.2);
   margin: 16px;
   font-size: 16px;
   text-align: center;
   text-decoration-color: blue;
+  border-radius: 30px;
 }
 .section-devider {
   height: 32px;
   background: rgba(161, 157, 157, 0.13);
   margin-top: 10px;
+  border-radius: 1em;
+  text-align: center;
+  padding: 5px;
 }
 
 .button1 {
@@ -46,6 +50,7 @@ code {
 .wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
   grid-auto-rows: minmax(100px, auto);
 }
 
@@ -57,4 +62,11 @@ code {
 .wrapper > div {
   background: #eee;
   padding: 1px;
+}
+
+.ant-carousel .slick-slide {
+  text-align: center;
+
+  background: #f3f5f7;
+  overflow: hidden;
 }

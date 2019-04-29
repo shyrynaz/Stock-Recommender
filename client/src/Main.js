@@ -71,7 +71,7 @@ class Main extends Component {
             }}
           >
             <div className="logo" />
-            <Menu theme="dark" mode="vertical-left" defaultSelectedKeys={["1"]}>
+            <Menu theme="dark" mode="vertical-left">
               <Menu.Item key="1">
                 <Icon type="home" />
                 <span>Dashboard</span>

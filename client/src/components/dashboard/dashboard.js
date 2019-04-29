@@ -108,8 +108,8 @@ class Dashboard extends Component {
       { title: "Symbol", dataIndex: "symbol", key: "symbol" },
       {
         title: "Latest Price",
-        dataIndex: "iexRealtimePrice",
-        key: "iexRealtimePrice"
+        dataIndex: "latestPrice",
+        key: "latestPrice"
       },
       {
         title: "changePercent",
