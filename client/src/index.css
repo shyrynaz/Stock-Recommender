@@ -58,6 +58,10 @@ code {
   display: grid;
   grid-template-columns: repeat(3, 2fr);
 }
+.news-articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
 
 .wrapper > div {
   background: #eee;

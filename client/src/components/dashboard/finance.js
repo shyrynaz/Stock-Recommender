@@ -10,7 +10,8 @@ import {
   Tooltip,
   Empty,
   Row,
-  Col
+  Col,
+  PageHeader
 } from "antd";
 import {
   getCompanies,
@@ -50,36 +51,40 @@ class Finance extends Component {
     const companyNames = this.props.selectOptions;
     return (
       <div>
-        Finance Sector
-        <div>
-          <Select
-            showSearch
-            placeholder="Select a Company"
-            optionFilterProp="children"
-            style={{ width: "25%" }}
-            onChange={this.handleChange}
-          >
-            {companyNames &&
-              companyNames.map((company, index) => {
-                if (company.Sector === "Finance") {
-                  return (
-                    <Select.Option key={index} value={company.Symbol}>
-                      {company.Name} {company.Symbol}
-                    </Select.Option>
-                  );
-                }
-                return null;
-              })}
-          </Select>
-          <Button
-            style={{ marginLeft: 10 }}
-            type="primary"
-            onClick={this.handleSubmit}
-          >
-            GetInfo
-          </Button>
-        </div>
-        <div>
+        <PageHeader
+          title="Financials Sector"
+          subTitle="Please select a company to get analysis"
+        >
+          <div className="content">
+            <Select
+              showSearch
+              placeholder="Select a Company"
+              optionFilterProp="children"
+              style={{ width: "25%" }}
+              onChange={this.handleChange}
+            >
+              {companyNames &&
+                companyNames.map((company, index) => {
+                  if (company.Sector === "Finance") {
+                    return (
+                      <Select.Option key={index} value={company.Symbol}>
+                        {company.Name} {company.Symbol}
+                      </Select.Option>
+                    );
+                  }
+                  return null;
+                })}
+            </Select>
+            <Button
+              style={{ marginLeft: 10 }}
+              type="primary"
+              onClick={this.handleSubmit}
+            >
+              GetInfo
+            </Button>
+          </div>
+        </PageHeader>
+        <div style={{ paddingTop: 10 }}>
           <Row gutter={24}>
             <Col span={12}>{this.renderSentiment()}</Col>
             <Col span={12}>{this.renderCompanyProfile()}</Col>

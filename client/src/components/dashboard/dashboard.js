@@ -34,7 +34,13 @@ class Dashboard extends Component {
                   <Card
                     style={{ marginBottom: 10 }}
                     title={company.companyName}
-                    extra={company.changePercent + "%"}
+                    extra={
+                      company.changePercent < 0 ? (
+                        <Tag color="red">{company.changePercent}</Tag>
+                      ) : (
+                        <Tag color="green">{company.changePercent}</Tag>
+                      )
+                    }
                   >
                     <Card.Grid style={gridStyle}>
                       <Statistic

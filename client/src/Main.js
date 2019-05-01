@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "./actions/authActions";
-import { Layout, Menu, Icon, Button } from "antd";
+import { Layout, Menu, Icon, Button, Affix } from "antd";
 
 import Register from "./components/auth/register";
 import Login from "./components/auth/login";
@@ -19,15 +19,17 @@ const { Header, Content, Sider } = Layout;
 
 class Main extends Component {
   state = {
-    collapsed: false
+    collapsed: false,
+    mode: "inline"
   };
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
-  toggle = () => {
+  toggle = collapsed => {
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !this.state.collapsed,
+      mode: collapsed ? "vertical" : "inline"
     });
   };
 
@@ -65,9 +67,7 @@ class Main extends Component {
             collapsible
             collapsed={this.state.collapsed}
             style={{
-              height: "100vh",
-              position: "fixed",
-              overflow: "auto"
+              height: "100vh"
             }}
           >
             <div className="logo" />
@@ -104,29 +104,28 @@ class Main extends Component {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Layout style={{ marginLeft: 200 }}>
-            <Header
-              style={{
-                background: "#fff",
-                padding: 0,
-                position: "fixed",
-                zIndex: 1,
-                width: "85%"
-              }}
-            >
-              <Icon
-                className="trigger"
-                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                style={{ cursor: "pointer" }}
-                onClick={this.toggle}
-              />
-              Stock<b>Recommendation</b>
-              {userAuth}
-            </Header>
+          <Layout style={{ height: "100vh", overflow: "scroll" }}>
+            <Affix offsetTop={1}>
+              <Header
+                style={{
+                  background: "#fff",
+                  padding: 0
+                }}
+              >
+                <Icon
+                  className="trigger"
+                  type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                  style={{ cursor: "pointer" }}
+                  onClick={this.toggle}
+                />
+                Stock<b>Recommendation</b>
+                {userAuth}
+              </Header>
+            </Affix>
             <Content
               style={{
                 margin: "24px 16px 10px",
-                paddingTop: 55,
+                paddingTop: 30,
                 overflow: "initial"
               }}
             >

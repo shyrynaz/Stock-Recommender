@@ -1,12 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Select, Button, List, Card, Statistic, Tooltip, Empty } from "antd";
+import {
+  Select,
+  Button,
+  List,
+  Card,
+  Statistic,
+  Tooltip,
+  Empty,
+  PageHeader,
+  Row,
+  Col
+} from "antd";
 import {
   getCompanies,
   getChartData,
   getCompanyInfo,
-  getSentimentData
+  getSentimentData,
+  getCompanyProfile
 } from "../../actions/companyActions";
 import ChartDisplay from "../layouts/chart";
 
@@ -30,44 +42,52 @@ class ConsumerServices extends Component {
     this.props.dispatch(getCompanyInfo(companyData));
     this.props.dispatch(getChartData(companyData));
     this.props.dispatch(getSentimentData(companyData));
+    this.props.dispatch(getCompanyProfile(companyData));
   };
   render() {
     const companyNames = this.props.selectOptions;
     return (
       <div>
-        Consumer Sector
-        <div>
-          <Select
-            showSearch
-            placeholder="Select a Company"
-            optionFilterProp="children"
-            style={{ width: "25%" }}
-            onChange={this.handleChange}
-          >
-            {companyNames &&
-              companyNames.map((company, index) => {
-                if (company.Sector === "Consumer Services") {
-                  return (
-                    <Select.Option key={index} value={company.Symbol}>
-                      {company.Name} {company.Symbol}
-                    </Select.Option>
-                  );
-                }
-                return null;
-              })}
-          </Select>
-          <Button
-            style={{ marginLeft: 10 }}
-            type="primary"
-            onClick={this.handleSubmit}
-          >
-            GetInfo
-          </Button>
+        <PageHeader
+          title="Consumer Services Sector"
+          subTitle="Please select a company to get analysis"
+        >
+          <div className="content">
+            <Select
+              showSearch
+              placeholder="Select a Company"
+              optionFilterProp="children"
+              style={{ width: "25%" }}
+              onChange={this.handleChange}
+            >
+              {companyNames &&
+                companyNames.map((company, index) => {
+                  if (company.Sector === "Consumer Services") {
+                    return (
+                      <Select.Option key={index} value={company.Symbol}>
+                        {company.Name} {company.Symbol}
+                      </Select.Option>
+                    );
+                  }
+                  return null;
+                })}
+            </Select>
+            <Button
+              style={{ marginLeft: 10 }}
+              type="primary"
+              onClick={this.handleSubmit}
+            >
+              GetInfo
+            </Button>
+          </div>
+        </PageHeader>
+        <div style={{ paddingTop: 10 }}>
+          <Row gutter={24}>
+            <Col span={12}>{this.renderSentiment()}</Col>
+            <Col span={12}>{this.renderCompanyProfile()}</Col>
+          </Row>
         </div>
-        <div>
-          <div>{this.renderSentiment()}</div>
-          <div>{this.renderChart()}</div>
-        </div>
+        <div>{this.renderChart()}</div>
         <div>{this.renderNewsArticles()}</div>
       </div>
     );
@@ -102,6 +122,36 @@ class ConsumerServices extends Component {
       return <Empty />;
     } else {
       return <ChartDisplay chartData={chartData} />;
+    }
+  }
+  renderCompanyProfile() {
+    const profileData = Object.entries(this.props.companyProfile).map(
+      ([key, value]) => {
+        return (
+          <div>
+            <b>{key}</b>: {value}
+          </div>
+        );
+      }
+    );
+    // console.log(profileData);
+    if (!profileData.length) {
+      return <Empty />;
+    } else {
+      return (
+        <List
+          size="small"
+          grid={{ gutter: 18, column: 2 }}
+          header={
+            <div>
+              <b>Company Profile</b>
+            </div>
+          }
+          bordered
+          dataSource={profileData}
+          renderItem={item => <List.Item>{item} </List.Item>}
+        />
+      );
     }
   }
   renderSentiment() {
@@ -158,7 +208,8 @@ const mapStateToProps = state => ({
   selectOptions: state.company.companies,
   chartData: state.company.chartData,
   companyInfo: state.company.companyInfo,
-  sentimentData: state.company.sentimentData
+  sentimentData: state.company.sentimentData,
+  companyProfile: state.company.companyProfile
 });
 
 export default connect(mapStateToProps)(ConsumerServices);
