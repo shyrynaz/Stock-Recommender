@@ -27,7 +27,9 @@ class StockService {
   }
 
   async getSectorPerformance() {
-    const url = `https://cloud.iexapis.com/stable/stock/market/sector-performance?token=pk_fe293720f28843b19c198db63a5776b7`;
+    const url = `https://cloud.iexapis.com/stable/stock/market/sector-performance?token=${
+      process.env.IEX_CLOUD_API
+    }`;
 
     let response = await axios.get(url);
     const sectorPerformance = response.data;
@@ -37,7 +39,9 @@ class StockService {
   }
 
   async getGainersList() {
-    const url = `https://cloud.iexapis.com/stable/stock/market/list/gainers?token=pk_fe293720f28843b19c198db63a5776b7`;
+    const url = `https://cloud.iexapis.com/stable/stock/market/list/gainers?token=${
+      process.env.IEX_CLOUD_API
+    }`;
     let response = await axios.get(url);
 
     const gainersList = response.data;
@@ -46,7 +50,9 @@ class StockService {
   }
 
   async getLosersList() {
-    const url = `https://cloud.iexapis.com/stable/stock/market/list/losers?token=pk_fe293720f28843b19c198db63a5776b7`;
+    const url = `https://cloud.iexapis.com/stable/stock/market/list/losers?token=${
+      process.env.IEX_CLOUD_API
+    }`;
     let response = await axios.get(url);
 
     const losersList = response.data;

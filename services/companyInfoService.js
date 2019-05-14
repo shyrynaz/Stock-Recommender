@@ -30,8 +30,9 @@ class CompanyInfoService {
    * fetching sentiment data of a given company symbol
    */
   async getCompanySentiment(symbol) {
-    const sentimentApiKey = "8fd260bdc4d7da3d8f3b7dd6b4d28c30";
-    const url = `http://api.stockfluence.com/fund/${symbol}?apikey=${sentimentApiKey}`;
+    const url = `http://api.stockfluence.com/fund/${symbol}?apikey=${
+      process.env.SENTIMENT_API_KEY
+    }`;
 
     let response = await axios.get(url);
     const sentimentData = response.data;
@@ -40,7 +41,9 @@ class CompanyInfoService {
   }
 
   async getCompanyProfile(symbol) {
-    const url = `https://cloud.iexapis.com/stable/stock/${symbol}/company?token=pk_fe293720f28843b19c198db63a5776b7`;
+    const url = `https://cloud.iexapis.com/stable/stock/${symbol}/company?token=${
+      process.env.IEX_CLOUD_API
+    }`;
 
     let response = await axios.get(url);
     const companyProfile = response.data;
